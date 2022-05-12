@@ -3,7 +3,7 @@ build-by-default: true
 branches:
 - main
 projects:
-  FFA:
+  FFA: 
     path: ""
     icon: icon.png
 ...
