@@ -78,10 +78,10 @@ class FFAGame
 	
 	private $scoreboardsLines = [
 		0 => TF::BOLD . TF::DARK_BLUE . "FFA",
-		1 => TF::BOLD . TF::LIGHT_BLUE . "F" . TF::DARK_BLUE . "FA",
-		2 => TF::BOLD . TF::DARK_BLUE . "F" . TF::LIGHT_BLUE . "F" . TF::DARK_BLUE . "A",
-		3 => TF::BOLD . TF::DARK_BLUE . "FF" . TF::LIGHT_BLUE . "A",
-		4 => TF::BOLD . TF::LIGHT_BLUE . "FFA"
+		1 => TF::BOLD . TF::BLUE . "F" . TF::DARK_BLUE . "FA",
+		2 => TF::BOLD . TF::DARK_BLUE . "F" . TF::BLUE . "F" . TF::DARK_BLUE . "A",
+		3 => TF::BOLD . TF::DARK_BLUE . "FF" . TF::BLUE . "A",
+		4 => TF::BOLD . TF::BLUE . "FFA"
 	];
 	
 	public $protect = [];
