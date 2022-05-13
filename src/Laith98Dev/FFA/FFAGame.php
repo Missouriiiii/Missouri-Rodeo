@@ -77,11 +77,11 @@ class FFAGame
 	private $scoreboardsLine = 0;
 	
 	private $scoreboardsLines = [
-		0 => TF::BOLD . TF::YELLOW . "FFA",
-		1 => TF::BOLD . TF::WHITE . "F" . TF::YELLOW . "FA",
-		2 => TF::BOLD . TF::YELLOW . "F" . TF::WHITE . "F" . TF::YELLOW . "A",
-		3 => TF::BOLD . TF::YELLOW . "FF" . TF::WHITE . "A",
-		4 => TF::BOLD . TF::WHITE . "FFA"
+		0 => TF::BOLD . TF::DARK_BLUE . "FFA",
+		1 => TF::BOLD . TF::LIGHT_BLUE . "F" . TF::DARK_BLUE . "FA",
+		2 => TF::BOLD . TF::DARK_BLUE . "F" . TF::LIGHT_BLUE . "F" . TF::DARK_BLUE . "A",
+		3 => TF::BOLD . TF::DARK_BLUE . "FF" . TF::LIGHT_BLUE . "A",
+		4 => TF::BOLD . TF::LIGHT_BLUE . "FFA"
 	];
 	
 	public $protect = [];
@@ -202,13 +202,13 @@ class FFAGame
 		
 		if(!is_array($lobby) || count($lobby) == 0){
 			if($player->hasPermission("ffa.command.admin"))
-				$player->sendMessage(TF::RED . "Please set lobby position, Usage: /ffa setlobby");
+				$player->sendMessage(TF::RED . "§l§2»§r§c Please set lobby position!§e Usage: /ffa setlobby");
 			return false;
 		}
 		
 		if(!is_array($this->getRespawn()) || count($this->getRespawn()) == 0){
 			if($player->hasPermission("ffa.command.admin"))
-				$player->sendMessage(TF::RED . "Please set respawn position, Usage: /ffa setrespawn");
+				$player->sendMessage(TF::RED . "§l§2»§r§c Please set respawn position!§e Usage: /ffa setrespawn");
 			return false;
 		}
 		
@@ -245,15 +245,14 @@ class FFAGame
 		$cfg = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
 		if($cfg->get("join-and-respawn-protected") === true){
 			$this->protect[$player->getName()] = 3;
-			$player->sendMessage("You're now protected 3 seconds");
+			$player->sendMessage("§l§2»§r§c You died! §3You're now protected for 3 seconds, §buse it wisely!");
 		}
 		
-		$this->broadcast($player->getName() . " joined to FFA!");
+		$this->broadcast($player->getName() . " §ajoined §1F§9F§1A§g!");
 		return true;
 	}
 	
-	public function quitPlayer(Player $player): bool{
-		
+	public function quitPlayer(Player $player): 
 		if(!isset($this->players[$player->getName()]))
 			return false;
 		
@@ -271,7 +270,7 @@ class FFAGame
 		$player->setHealth(20);
 		$player->getHungerManager()->setFood(20);
 		
-		$this->broadcast($player->getName() . " quit FFA!");
+		$this->broadcast($player->getName() . " §cjoined §1F§9F§1A§g!");
 		return true;
 	}
 	
@@ -380,14 +379,15 @@ class FFAGame
 		foreach ($this->getPlayers() as $player){
 			$cfg = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
 			$this->new($player, "ffa", $this->scoreboardsLines[$this->scoreboardsLine]);
-			$this->setLine($player, 1, " ");
-			$this->setLine($player, 2, " Players: " . TF::YELLOW . count($this->getPlayers()) . "  ");
-			$this->setLine($player, 3, "  ");
-			$this->setLine($player, 4, " Map: " . TF::YELLOW . $this->getName() . "  ");
+			$this->setLine($player, 1, "=================  ");
+			$this->setLine($player, 2, "§5Blossom §l§d»§r Hub");
+			$this->setLine($player, 3, "      ");
+			$this->setLine($player, 4, "§ePlaying: " . TF::WHITE . count($this->getPlayers()) . "  ");
+			$this->setLine($player, 4, "§eMap: " . TF::WHITE . $this->getName() . "  ");
 			$this->setLine($player, 5, "   ");
-			$this->setLine($player, 6, " Kills: " . TF::YELLOW . $this->plugin->getKills($player) . " ");
-			$this->setLine($player, 7, " Deaths: " . TF::YELLOW . $this->plugin->getDeaths($player) . " ");
-			$this->setLine($player, 8, "    ");
+			$this->setLine($player, 6, "§aKills: " . TF::WHITE . $this->plugin->getKills($player) . " ");
+			$this->setLine($player, 7, "§cDeaths: " . TF::WHITE . $this->plugin->getDeaths($player) . " ");
+			$this->setLine($player, 8, ""=================    ");
 			$this->setLine($player, 9, " " . $cfg->get("scoreboardIp", "play.example.net") . " ");
 		}
 		
