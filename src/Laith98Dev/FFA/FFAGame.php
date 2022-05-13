@@ -387,7 +387,7 @@ class FFAGame
 			$this->setLine($player, 5, "   ");
 			$this->setLine($player, 6, "§aKills: " . TF::WHITE . $this->plugin->getKills($player) . " ");
 			$this->setLine($player, 7, "§cDeaths: " . TF::WHITE . $this->plugin->getDeaths($player) . " ");
-			$this->setLine($player, 8, ""=================    ");
+			$this->setLine($player, 8, "=================    ");
 			$this->setLine($player, 9, " " . $cfg->get("scoreboardIp", "play.example.net") . " ");
 		}
 		
