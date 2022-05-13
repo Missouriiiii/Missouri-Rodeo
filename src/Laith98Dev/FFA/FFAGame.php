@@ -248,7 +248,7 @@ class FFAGame
 			$player->sendMessage("§l§2»§r§c You died! §3You're now protected for 3 seconds, §buse it wisely!");
 		}
 		
-		$this->broadcast($player->getName() . " §ajoined §1F§9F§1A§g!");
+		$this->broadcast("§l§2»§r§b" . $player->getName() . " §ajoined §l§1F§9F§1A§g!");
 		return true;
 	}
 	
@@ -270,7 +270,7 @@ class FFAGame
 		$player->setHealth(20);
 		$player->getHungerManager()->setFood(20);
 		
-		$this->broadcast($player->getName() . " §cjoined §1F§9F§1A§g!");
+		$this->broadcast("§l§2»§r§b " . $player->getName() . " §l§cjoined §1F§9F§1A§g!");
 		return true;
 	}
 	
@@ -380,7 +380,7 @@ class FFAGame
 			$cfg = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
 			$this->new($player, "ffa", $this->scoreboardsLines[$this->scoreboardsLine]);
 			$this->setLine($player, 1, "=================  ");
-			$this->setLine($player, 2, "§5Blossom §l§d»§r Hub");
+			$this->setLine($player, 2, "§5Blossom §l§d»§r FFA");
 			$this->setLine($player, 3, "      ");
 			$this->setLine($player, 4, "§ePlaying: " . TF::WHITE . count($this->getPlayers()) . "  ");
 			$this->setLine($player, 4, "§eMap: " . TF::WHITE . $this->getName() . "  ");
