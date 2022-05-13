@@ -252,7 +252,7 @@ class FFAGame
 		return true;
 	}
 	
-	public function quitPlayer(Player $player): 
+	public function quitPlayer(Player $player): bool{
 		if(!isset($this->players[$player->getName()]))
 			return false;
 		
