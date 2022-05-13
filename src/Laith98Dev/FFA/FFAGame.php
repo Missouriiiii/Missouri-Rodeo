@@ -248,7 +248,7 @@ class FFAGame
 			$player->sendMessage("§l§2»§r§c You died! §3You're now protected for 3 seconds, §buse it wisely!");
 		}
 		
-		$this->broadcast("§l§2»§r§b" . $player->getName() . " §ajoined §l§1F§9F§1A§g!");
+		$this->broadcast("§l§2»§r§b " . $player->getName() . " §ajoined §l§1F§9F§1A§g!");
 		return true;
 	}
 	
@@ -270,7 +270,7 @@ class FFAGame
 		$player->setHealth(20);
 		$player->getHungerManager()->setFood(20);
 		
-		$this->broadcast("§l§2»§r§b " . $player->getName() . " §l§cjoined §1F§9F§1A§g!");
+		$this->broadcast("§l§2»§r§b " . $player->getName() . " §l§cleft §1F§9F§1A§g!");
 		return true;
 	}
 	
@@ -383,12 +383,12 @@ class FFAGame
 			$this->setLine($player, 2, "§5Blossom §l§d»§r FFA");
 			$this->setLine($player, 3, "      ");
 			$this->setLine($player, 4, "§ePlaying: " . TF::WHITE . count($this->getPlayers()) . "  ");
-			$this->setLine($player, 4, "§eMap: " . TF::WHITE . $this->getName() . "  ");
-			$this->setLine($player, 5, "   ");
-			$this->setLine($player, 6, "§aKills: " . TF::WHITE . $this->plugin->getKills($player) . " ");
-			$this->setLine($player, 7, "§cDeaths: " . TF::WHITE . $this->plugin->getDeaths($player) . " ");
-			$this->setLine($player, 8, "=================    ");
-			$this->setLine($player, 9, " " . $cfg->get("scoreboardIp", "play.example.net") . " ");
+			$this->setLine($player, 5, "§eMap: " . TF::WHITE . $this->getName() . "  ");
+			$this->setLine($player, 6, "   ");
+			$this->setLine($player, 7, "§aKills: " . TF::WHITE . $this->plugin->getKills($player) . " ");
+			$this->setLine($player, 8, "§cDeaths: " . TF::WHITE . $this->plugin->getDeaths($player) . " ");
+			$this->setLine($player, 9, "=================    ");
+			$this->setLine($player, 10, " " . $cfg->get("scoreboardIp", "play.example.net") . " ");
 		}
 		
 		if($this->scoreboardsLine == (count($this->scoreboardsLines) - 1)){
