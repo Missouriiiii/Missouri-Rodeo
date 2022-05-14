@@ -379,7 +379,7 @@ class FFAGame
 		foreach ($this->getPlayers() as $player){
 			$cfg = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
 			$this->new($player, "ffa", $this->scoreboardsLines[$this->scoreboardsLine]);
-			$this->setLine($player, 1, "=================  ");
+			$this->setLine($player, 1, "        ");
 			$this->setLine($player, 2, "§5Blossom §l§d»§r FFA");
 			$this->setLine($player, 3, "      ");
 			$this->setLine($player, 4, "§ePlaying: " . TF::WHITE . count($this->getPlayers()) . "  ");
@@ -387,7 +387,7 @@ class FFAGame
 			$this->setLine($player, 6, "   ");
 			$this->setLine($player, 7, "§aKills: " . TF::WHITE . $this->plugin->getKills($player) . " ");
 			$this->setLine($player, 8, "§cDeaths: " . TF::WHITE . $this->plugin->getDeaths($player) . " ");
-			$this->setLine($player, 9, "=================    ");
+			$this->setLine($player, 9, "        ");
 			$this->setLine($player, 10, " " . $cfg->get("scoreboardIp", "play.example.net") . " ");
 		}
 		
