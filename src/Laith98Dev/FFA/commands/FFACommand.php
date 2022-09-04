@@ -55,39 +55,39 @@ class FFACommand extends Command implements PluginOwned
 		parent::__construct("ffa", "FFA Commands", null, ["ffa"]);
 		$this->setPermission("ffa.command.admin");
 	}
-
+	
 	public function getOwningPlugin() : Main{
 		return $this->plugin;
 	}
-
+	
 	public function execute(CommandSender $sender, string $cmdLabel, array $args): bool{
 		if(!($sender instanceof Player)){
 			$sender->sendMessage("run command in-game only");
 			return false;
 		}
-
+		
 		if(!isset($args[0])){
 			$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " help");
 			return false;
 		}
-
+		
 		switch ($args[0]){
 			case "help":
 				$sender->sendMessage(TF::YELLOW . "========================");
-				//if($this->testPermission($sender)){
 				if($sender->hasPermission("ffa.command.admin")){
 					$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " help");
 					$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " create");
 					$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " remove");
 					$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " setlobby");
 					$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " setrespawn");
+					$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " reload");
 					$sender->sendMessage (TF::GREEN  . "- /" . $cmdLabel . " list");
 				}
 				$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " join");
 				$sender->sendMessage(TF::GREEN  . "- /" . $cmdLabel . " quit");
 				$sender->sendMessage(TF::YELLOW . "========================");
 			break;
-
+			
 			case "create":
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
@@ -95,10 +95,10 @@ class FFACommand extends Command implements PluginOwned
 					$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " create <arenaName>");
 					return false;
 				}
-
+				
 				$arenaName = $args[1];
 				$level = $sender->getWorld();
-
+				
 				if($level->getFolderName() == $this->plugin->getServer()->getWorldManager()->getDefaultWorld()->getFolderName()){
 					$sender->sendMessage(TF::RED . "You cannot create game in default world!");
 					return false;
@@ -119,18 +119,17 @@ class FFACommand extends Command implements PluginOwned
 					}
 				});
 
-				return true;
 			break;
-
+			
 			case "remove":
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
-
+				
 				if(!isset($args[1])){
 					$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " remove <arenaName>");
 					return false;
 				}
-
+				
 				$arenaName = $args[1];
 
 				$this->plugin->removeArena($arenaName, function (bool $deleted) use ($sender){
@@ -142,11 +141,11 @@ class FFACommand extends Command implements PluginOwned
 				});
 
 			break;
-
+			
 			case "setlobby":
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
-
+				
 				$level = $sender->getWorld();
 				$arena = null;
 				$arenaName = null;
@@ -166,15 +165,15 @@ class FFACommand extends Command implements PluginOwned
 							$sender->sendMessage(TF::RED . "Arena not exist, try create Usage: /" . $cmdLabel . " create" . "!");
 							return false;
 						}
-
+						
 						$data = ["PX" => $sender->getLocation()->x, "PY" => $sender->getLocation()->y, "PZ" => $sender->getLocation()->z, "YAW" => $sender->getLocation()->yaw, "PITCH" => $sender->getLocation()->pitch];
-
+					
 						$this->plugin->getProvider()->db()->executeChange(SQLKeyStorer::UPDATE_LOBBY,
 						[
 							"name" => $arenaName,
 							"lobby" => json_encode($data)
 						]);
-
+		
 						$this->plugin->getProvider()->db()->executeSelect(SQLKeyStorer::GET_ARENAS,
 						[],
 						function(array $rows) use ($sender, $arenaName) {
@@ -187,7 +186,7 @@ class FFACommand extends Command implements PluginOwned
 										if(($arena = $this->plugin->getArena($arenaName)) !== null){
 											$arena->UpdateData($data);
 										}
-
+										
 										$sender->sendMessage(TF::YELLOW . "successfully updated lobby position for '" . $arenaName . "'!");
 										break;
 									}
@@ -197,11 +196,11 @@ class FFACommand extends Command implements PluginOwned
 					}
 				});
 			break;
-
+			
 			case "setrespawn":
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
-
+				
 				$level = $sender->getWorld();
 				$this->plugin->getProvider()->db()->executeSelect(SQLKeyStorer::GET_ARENAS,
 				[],
@@ -235,7 +234,7 @@ class FFACommand extends Command implements PluginOwned
 									if(strtolower($data["name"]) == strtolower($arenaName)){
 										$data["lobby"] = json_decode($data["lobby"], true);
 										$data["respawn"] = json_decode($data["respawn"], true);
-
+										
 										if(($arena = $this->plugin->getArena($arenaName)) !== null){
 											$arena->UpdateData($data);
 										}
@@ -250,29 +249,29 @@ class FFACommand extends Command implements PluginOwned
 				});
 
 			break;
-
+			
 			case "list":
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
-
+				
 				$sender->sendMessage(TF::GREEN . "Arenas:");
 				foreach ($this->plugin->getArenas() as $arena){
 					$sender->sendMessage(TF::YELLOW . "- " . $arena->getName() . " => Players: " . count($arena->getPlayers()));
 				}
 			break;
-
+			
 			case "join":
 				if(!$sender->hasPermission("ffa.command.join"))
 					return false;
 				if(isset($args[1])){
 					$player = $sender;
-
+					
 					if(isset($args[2])){
 						if(($pp = $this->plugin->getServer()->getPlayerByPrefix($args[2])) !== null){
 							$player = $pp;
 						}
 					}
-
+					
 					if($this->plugin->joinArena($player, $args[1])){
 						return true;
 					}
@@ -282,7 +281,7 @@ class FFACommand extends Command implements PluginOwned
 					}
 				}
 			break;
-
+			
 			case "quit":
 				if(!$sender->hasPermission("ffa.command.quit"))
 					return false;
@@ -299,7 +298,7 @@ class FFACommand extends Command implements PluginOwned
 			case "reload":
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
-
+				
 				foreach ($this->getOwningPlugin()->getArenas() as $arena){
 					foreach ($arena->getPlayers() as $player){
 						$arena->quitPlayer($player);
@@ -316,6 +315,13 @@ class FFACommand extends Command implements PluginOwned
 				$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " help");
 			break;
 		}
+		
 		return false;
 	}
 }
+Footer
+©2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Se
