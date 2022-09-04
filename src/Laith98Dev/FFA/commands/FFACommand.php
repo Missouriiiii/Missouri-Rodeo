@@ -214,7 +214,7 @@ class FFACommand extends Command implements PluginOwned
 						}
 
 						if($arenaName == null){
-							$sender->sendMessage(TF::RED . "Arena not exist, try create Usage: /" . $cmdLabel . " create" . "!");
+							$sender->sendMessage(TF::RED . "§l§g» §r§cThat Arena does not exist, Usage: /" . $cmdLabel . " create" . "!");
 							return false;
 						}
 
@@ -239,7 +239,7 @@ class FFACommand extends Command implements PluginOwned
 											$arena->UpdateData($data);
 										}
 
-										$sender->sendMessage(TF::YELLOW . "successfully updated respawn position for '" . $arenaName . "'!");
+										$sender->sendMessage(TF::YELLOW . "§l§g» §r§aSuccessfully updated respawn position for '" . $arenaName . "'!");
 										break;
 									}
 								}
@@ -256,7 +256,7 @@ class FFACommand extends Command implements PluginOwned
 				
 				$sender->sendMessage(TF::GREEN . "Arenas:");
 				foreach ($this->plugin->getArenas() as $arena){
-					$sender->sendMessage(TF::YELLOW . "- " . $arena->getName() . " => Players: " . count($arena->getPlayers()));
+					$sender->sendMessage(TF::YELLOW . "§l§g» §r§e" . $arena->getName() . " => Players: " . count($arena->getPlayers()));
 				}
 			break;
 			
@@ -290,7 +290,7 @@ class FFACommand extends Command implements PluginOwned
 						return true;
 					}
 				} else {
-					$sender->sendMessage("You're not in a arena!");
+					$sender->sendMessage("§l§g» §r§cYou're not in a arena!");
 					return false;
 				}
 			break;
@@ -308,11 +308,11 @@ class FFACommand extends Command implements PluginOwned
 				$this->getOwningPlugin()->loadKits();
 				$this->getOwningPlugin()->loadArenas();
 
-				$sender->sendMessage(TF::GREEN . "You've been reloaded the plugin successfully!");
+				$sender->sendMessage(TF::GREEN . "§l§g» §r§aYou've reloaded the plugin successfully!");
 			break;
 
 			default:
-				$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " help");
+				$sender->sendMessage(TF::RED . "§l§g» §r§cUsage: /" . $cmdLabel . " help");
 			break;
 		}
 		
