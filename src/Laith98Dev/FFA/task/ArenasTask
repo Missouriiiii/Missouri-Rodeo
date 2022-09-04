@@ -46,7 +46,7 @@ class ArenasTask extends Task {
 		){
 		// NOOP
 	}
-
+	
 	public function onRun(): void{
 		foreach ($this->plugin->getArenas() as $arena){
 			$arena->tick();
