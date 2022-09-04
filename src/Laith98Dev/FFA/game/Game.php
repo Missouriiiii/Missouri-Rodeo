@@ -53,7 +53,7 @@ use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 
-class FFAGame 
+class FFAGame extends PluginBase
 {
 	private array $players = [];
 	
