@@ -62,12 +62,12 @@ class FFACommand extends Command implements PluginOwned
 	
 	public function execute(CommandSender $sender, string $cmdLabel, array $args): bool{
 		if(!($sender instanceof Player)){
-			$sender->sendMessage("run command in-game only");
+			$sender->sendMessage("§l§g» §r§cYou can only run this command in-game!");
 			return false;
 		}
 		
 		if(!isset($args[0])){
-			$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " help");
+			$sender->sendMessage(TF::RED . "§l§g» §r§cUsage: /" . $cmdLabel . " help");
 			return false;
 		}
 		
@@ -92,7 +92,7 @@ class FFACommand extends Command implements PluginOwned
 				if(!$sender->hasPermission("ffa.command.admin"))
 					return false;
 				if(!isset($args[1])){
-					$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " create <arenaName>");
+					$sender->sendMessage(TF::RED . "§l§g» §r§cUsage: /" . $cmdLabel . " create <arenaName>");
 					return false;
 				}
 				
@@ -100,20 +100,20 @@ class FFACommand extends Command implements PluginOwned
 				$level = $sender->getWorld();
 				
 				if($level->getFolderName() == $this->plugin->getServer()->getWorldManager()->getDefaultWorld()->getFolderName()){
-					$sender->sendMessage(TF::RED . "You cannot create game in default world!");
+					$sender->sendMessage(TF::RED . "§l§g» §r§cYou cannot create a game in the default world!");
 					return false;
 				}
 
 				$this->plugin->arena_Exist($arenaName, function (bool $exists) use ($sender, $arenaName, $level){
 					if($exists){
-						$sender->sendMessage(TF::RED . "Arena already exist!");
+						$sender->sendMessage(TF::RED . "§l§g» §r§cThe arena you are trying to create already exists!");
 					} else {
 						$data = ["name" => $arenaName, "world" => $level->getFolderName(), "lobby" => [], "respawn" => []];
 						$this->plugin->addArena($data, function (bool $addRusult) use ($sender){
 							if($addRusult){
-								$sender->sendMessage(TF::YELLOW . "Arena created!");
+								$sender->sendMessage(TF::YELLOW . "§l§g» §r§aArena successfully created!");
 							} else {
-								$sender->sendMessage(TF::RED . "An error while trying to add this arena please contact with developer!");
+								$sender->sendMessage(TF::RED . "§l§g» §r§cAn error occured while trying to add this arena! Please try again later!");
 							}
 						});
 					}
@@ -126,7 +126,7 @@ class FFACommand extends Command implements PluginOwned
 					return false;
 				
 				if(!isset($args[1])){
-					$sender->sendMessage(TF::RED . "Usage: /" . $cmdLabel . " remove <arenaName>");
+					$sender->sendMessage(TF::RED . "§l§g» §r§cUsage: /" . $cmdLabel . " remove <arenaName>");
 					return false;
 				}
 				
@@ -134,9 +134,9 @@ class FFACommand extends Command implements PluginOwned
 
 				$this->plugin->removeArena($arenaName, function (bool $deleted) use ($sender){
 					if($deleted){
-						$sender->sendMessage(TF::GREEN . "Arena deleted!");
+						$sender->sendMessage(TF::GREEN . "§l§g» §r§aArena successfully deleted!");
 					} else {
-						$sender->sendMessage(TF::RED . "Arena not exist");
+						$sender->sendMessage(TF::RED . "§l§g» §r§cThat arena already exists");
 					}
 				});
 
@@ -162,7 +162,7 @@ class FFACommand extends Command implements PluginOwned
 						}
 
 						if($arenaName == null){
-							$sender->sendMessage(TF::RED . "Arena not exist, try create Usage: /" . $cmdLabel . " create" . "!");
+							$sender->sendMessage(TF::RED . "§l§g» §r§cThat arena does not exist! Usage: /" . $cmdLabel . " create" . "!");
 							return false;
 						}
 						
@@ -187,7 +187,7 @@ class FFACommand extends Command implements PluginOwned
 											$arena->UpdateData($data);
 										}
 										
-										$sender->sendMessage(TF::YELLOW . "successfully updated lobby position for '" . $arenaName . "'!");
+										$sender->sendMessage(TF::YELLOW . "§l§g» §r§aSuccessfully updated lobby position for '" . $arenaName . "'!");
 										break;
 									}
 								}
