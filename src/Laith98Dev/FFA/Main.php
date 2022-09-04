@@ -417,12 +417,12 @@ class Main extends PluginBase implements Listener
 	
 	public function joinArena(Player $player, string $name): bool{
 		if(($arena = $this->getArena($name)) == null){
-			$player->sendMessage(TF::RED . "Arena not exist!");
+			$player->sendMessage(TF::RED . "§l§g» §r§cThe arena you selected does not exist!");
 			return false;
 		}
 		
 		if($this->getPlayerArena($player) !== null){
-			$player->sendMessage(TF::RED . "You're already in arena!");
+			$player->sendMessage(TF::RED . "l§g» §r§cYou're already in an arena!");
 			return false;
 		}
 		
@@ -434,12 +434,12 @@ class Main extends PluginBase implements Listener
 	
 	public function joinRandomArena(Player $player): bool{
 		if($this->getPlayerArena($player) !== null){
-			$player->sendMessage(TF::RED . "You're already in arena!");
+			$player->sendMessage(TF::RED . "l§g» §r§cYou're already in an arena!");
 			return false;
 		}
 		
 		if(count($this->getArenas()) == 0){
-			$player->sendMessage(TF::RED . "No arenas found!");
+			$player->sendMessage(TF::RED . "l§g» §r§cNo arenas were found!");
 			return false;
 		}
 		
@@ -577,7 +577,7 @@ class Main extends PluginBase implements Listener
 			$banned = $cfg->get("banned-commands", []);
 			$banned = array_map("strtolower", $banned);
 			if(($arena = $this->getPlayerArena($player)) !== null && in_array(strtolower(explode(" ", $command, 2)[0]), $banned)) {
-				$player->sendMessage(TF::RED . "you cannot use this command here!");
+				$player->sendMessage(TF::RED . "l§g» §r§cYou cannot use that command in FFA!");
 				$event->cancel();
 			}
 		}
