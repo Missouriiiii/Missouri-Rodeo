@@ -12,11 +12,11 @@ namespace Laith98Dev\FFA\game;
  *	| |___| (_| | | |_| | | |/ /| (_) | |__| |  __/\ V / 
  *	|______\__,_|_|\__|_| |_/_/  \___/|_____/ \___| \_/  
  *	
- *	Copyright (C) 2021 Laith98Dev
+ *	Copyright (C) 2022 Laith98Dev
  *  
  *	Youtube: Laith Youtuber
  *	Discord: Laith98Dev#0695
- *	Gihhub: Laith98Dev
+ *	Github: Laith98Dev
  *	Email: help@laithdev.tk
  *	Donate: https://paypal.me/Laith113
  *
@@ -56,11 +56,11 @@ use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 class FFAGame 
 {
 	private array $players = [];
-
+	
 	private array $scoreboards = [];
-
+	
 	private int $scoreboardsLine = 0;
-
+	
 	private array $scoreboardsLines = [
 		0 => TF::BOLD . TF::YELLOW . "FFA",
 		1 => TF::BOLD . TF::WHITE . "F" . TF::YELLOW . "FA",
@@ -68,16 +68,16 @@ class FFAGame
 		3 => TF::BOLD . TF::YELLOW . "FF" . TF::WHITE . "A",
 		4 => TF::BOLD . TF::WHITE . "FFA"
 	];
-
+	
 	private array $protect = [];
-
+	
 	public function __construct(
 		private Main $plugin,
 		private array $data
 		){
 		$this->setScoreTitle();
 	}
-
+	
 	public function getPlugin(){
 		return $this->plugin;
 	}
@@ -104,35 +104,35 @@ class FFAGame
 		$index[] = TF::BOLD . TF::WHITE . $title;
 		$this->scoreboardsLines = $index;
 	}
-
+	
 	public function UpdateData(array $data){
 		$this->data = $data;
 	}
-
+	
 	public function getData(){
 		return $this->data;
 	}
-
+	
 	public function getName(){
 		return $this->getData()["name"];
 	}
-
+	
 	public function getWorld(){
 		return $this->getData()["world"];
 	}
-
+	
 	public function getLobby(){
 		return $this->getData()["lobby"];
 	}
-
+	
 	public function getRespawn(){
 		return $this->getData()["respawn"];
 	}
-
+	
 	public function getPlayers(){
 		return $this->players;
 	}
-
+	
 	public function isProtected(Player $player){
 		return isset($this->protect[$player->getName()]);
 	}
@@ -140,11 +140,11 @@ class FFAGame
 	public function getProtectTime(Player $player){
 		return $this->protect[$player->getName()] ?? 0;
 	}
-
+	
 	public function inArena(Player $player){
 		return isset($this->players[$player->getName()]) ? true : false;
 	}
-
+	
 	public function new(Player $player, string $objectiveName, string $displayName): void{
 		if(isset($this->scoreboards[$player->getName()])){
 			$this->remove($player);
@@ -194,7 +194,7 @@ class FFAGame
 	public function getObjectiveName(Player $player): ?string{
 		return isset($this->scoreboards[$player->getName()]) ? $this->scoreboards[$player->getName()] : null;
 	}
-
+	
 	public function getLevel(?string $name = null){
 		if($name == null){
 			$this->plugin->getServer()->getWorldManager()->loadWorld($this->getWorld());
@@ -202,64 +202,64 @@ class FFAGame
 		}
 		return $this->plugin->getServer()->getWorldManager()->getWorldByName($name);
 	}
-
+	
 	public function broadcast(string $message){
 		foreach ($this->getPlayers() as $player){
 			$player->sendMessage($message);
 		}
 	}
-
+	
 	public function joinPlayer(Player $player): bool{
-
+		
 		if(isset($this->players[$player->getName()]))
 			return false;
-
+		
 		$lobby = $this->getLobby();
-
+		
 		if(!is_array($lobby) || count($lobby) == 0){
 			if($player->hasPermission("ffa.command.admin"))
 				$player->sendMessage(TF::RED . "Please set lobby position, Usage: /ffa setlobby");
 			return false;
 		}
-
+		
 		if(!is_array($this->getRespawn()) || count($this->getRespawn()) == 0){
 			if($player->hasPermission("ffa.command.admin"))
 				$player->sendMessage(TF::RED . "Please set respawn position, Usage: /ffa setrespawn");
 			return false;
 		}
-
+		
 		$x = floatval($lobby["PX"]);
 		$y = floatval($lobby["PY"]);
 		$z = floatval($lobby["PZ"]);
 		$yaw = floatval($lobby["YAW"]);
 		$pitch = floatval($lobby["PITCH"]);
-
+		
 		$player->teleport(new Position($x, $y, $z, $this->getLevel()), $yaw, $pitch);
-
+		
 		$player->setGamemode(GameMode::ADVENTURE());
 		$this->addItems($player);
-
+		
 		$this->players[$player->getName()] = $player;
-
+		
 		$this->broadcast(Utils::messageFormat($this->getPlugin()->getConfig()->get("join-message"), $player, $this));
-
+		
 		if($this->plugin->getConfig()->get("join-and-respawn-protected") === true){
 			$this->protect[$player->getName()] = $this->plugin->getConfig()->get("protected-time", 3);
 			$player->sendMessage(Utils::messageFormat($this->getPlugin()->getConfig()->get("protected-message"), $player, $this));
 		}
-
+	
 		return true;
 	}
-
+	
 	public function quitPlayer(Player $player): bool{
-
+		
 		if(!isset($this->players[$player->getName()]))
 			return false;
-
+		
 		unset($this->players[$player->getName()]);
-
+		
 		$this->remove($player);
-
+		
 		$player->teleport($this->plugin->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
 		$player->getInventory()->clearAll();
 		$player->getArmorInventory()->clearAll();
@@ -268,26 +268,26 @@ class FFAGame
 		$player->setGamemode($this->plugin->getServer()->getGamemode());
 		$player->setHealth(20);
 		$player->getHungerManager()->setFood(20);
-
+		
 		$this->broadcast(Utils::messageFormat($this->getPlugin()->getConfig()->get("leave-message"), $player, $this));
 		return true;
 	}
-
+	
 	public function killPlayer(Player $player): void{
 		$message = null;
 		$event = $player->getLastDamageCause();
-
+		
 		if($event == null)
 			return;
-
+		
 		if(!is_int($event->getCause()))
 			return;
-
+		
 		$player->getInventory()->clearAll();
 		$player->getArmorInventory()->clearAll();
 		$player->getCraftingGrid()->clearAll();
 		$player->getEffects()->clear();
-
+		
 		$player->setGamemode(GameMode::ADVENTURE());
 		$player->setHealth(20);
 		$player->getHungerManager()->setFood(20);
@@ -310,46 +310,46 @@ class FFAGame
 							}
 						}
 					});
-
+					
 					$damager->sendPopup(TF::YELLOW . "+1 Kill");
 					$this->addItems($damager);
 				}
 			break;
-
+			
 			case EntityDamageEvent::CAUSE_VOID:
 				$message = str_replace(["{PLAYER}", "&"], [$player->getName(), TF::ESCAPE], $this->plugin->getConfig()->get("death-void-message"));
 			break;
 		}
-
+		
 		if($message !== null)
 			$this->broadcast($message);
-
+		
 		if($this->plugin->getConfig()->get("death-respawn-inMap") === true){
 			$this->respawn($player);
 		} else {
 			$this->quitPlayer($player);
 		}
 	}
-
+	
 	public function respawn(Player $player){
 		$player->setGamemode(GameMode::ADVENTURE());
-
+		
 		$this->addItems($player);
-
+		
 		$respawn = $this->getRespawn();
 		$x = floatval($respawn["PX"]);
 		$y = floatval($respawn["PY"]);
 		$z = floatval($respawn["PZ"]);
 		$yaw = floatval($respawn["YAW"]);
 		$pitch = floatval($respawn["PITCH"]);
-
+		
 		$player->teleport(new Position($x, $y, $z, $this->getLevel()), $yaw, $pitch);
-
+		
 		if($this->plugin->getConfig()->get("join-and-respawn-protected") === true){
 			$this->protect[$player->getName()] = $this->plugin->getConfig()->get("protected-time", 3);
 			$player->sendMessage(str_replace(["{PLAYER}", "{TIME}", "&"], [$player->getName(), $this->protect[$player->getName()], TF::ESCAPE], $this->plugin->getConfig()->get("protected-message")));
 		}
-
+		
 		$player->sendTitle(Utils::messageFormat($this->getPlugin()->getConfig()->get("respawn-message"), $player, $this));
 	}
 
@@ -358,12 +358,12 @@ class FFAGame
 		$player->getArmorInventory()->clearAll();
 		$player->getCraftingGrid()->clearAll();
 		$player->getEffects()->clear();
-
+		
 		// $player->getInventory()->setItem(0, ItemFactory::getInstance()->get(ItemIds::IRON_SWORD, 0, 1));
 		// $player->getInventory()->setItem(1, ItemFactory::getInstance()->get(ItemIds::GOLDEN_APPLE, 0, 5));
 		// $player->getInventory()->setItem(2, ItemFactory::getInstance()->get(ItemIds::BOW, 0, 1));
 		// $player->getInventory()->setItem(3, ItemFactory::getInstance()->get(ItemIds::ARROW, 0, 15));
-
+		
 		// $player->getArmorInventory()->setHelmet(ItemFactory::getInstance()->get(ItemIds::IRON_HELMET));
 		// $player->getArmorInventory()->setChestplate(ItemFactory::getInstance()->get(ItemIds::IRON_CHESTPLATE));
 		// $player->getArmorInventory()->setLeggings(ItemFactory::getInstance()->get(ItemIds::IRON_LEGGINGS));
@@ -376,7 +376,7 @@ class FFAGame
 		foreach ($items as $slot => $item){
 			$player->getInventory()->setItem(intval($slot), $item);
 		}
-
+		
 		foreach ($armors as $type => $item){
 			switch ($type){
 				case "helmet":
@@ -391,11 +391,11 @@ class FFAGame
 				case "boots":
 					$player->getArmorInventory()->setBoots($item);
 					break;
-
+				
 			}
 		}
 	}
-
+	
 	public function tick(){
 		foreach ($this->getPlayers() as $player){
 			if(!$player->isOnline()) continue;
@@ -414,13 +414,13 @@ class FFAGame
 				});
 			});
 		}
-
+		
 		if($this->scoreboardsLine == (count($this->scoreboardsLines) - 1)){
 			$this->scoreboardsLine = 0;
 		} else {
 			++$this->scoreboardsLine;
 		}
-
+		
 		foreach ($this->protect as $name => $time){
 			if($time == 0){
 				unset($this->protect[$name]);
