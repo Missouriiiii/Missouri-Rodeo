@@ -62,11 +62,11 @@ class FFAGame
 	private int $scoreboardsLine = 0;
 	
 	private array $scoreboardsLines = [
-		0 => TF::BOLD . TF::YELLOW . "FFA",
-		1 => TF::BOLD . TF::WHITE . "F" . TF::YELLOW . "FA",
-		2 => TF::BOLD . TF::YELLOW . "F" . TF::WHITE . "F" . TF::YELLOW . "A",
-		3 => TF::BOLD . TF::YELLOW . "FF" . TF::WHITE . "A",
-		4 => TF::BOLD . TF::WHITE . "FFA"
+		0 => TF::BOLD . TF::BLUE . "FFA",
+		1 => TF::BOLD . TF::BLUE . "F" . TF::DARK_BLUE . "FA",
+		2 => TF::BOLD . TF::BLUE . "F" . TF::DARK_BLUE . "F" . TF::BLUE . "A",
+		3 => TF::BOLD . TF::BLUE . "FF" . TF::BARK_BLUE . "A",
+		4 => TF::BOLD . TF::DARK_BLUE . "FFA"
 	];
 	
 	private array $protect = [];
@@ -218,13 +218,13 @@ class FFAGame
 		
 		if(!is_array($lobby) || count($lobby) == 0){
 			if($player->hasPermission("ffa.command.admin"))
-				$player->sendMessage(TF::RED . "Please set lobby position, Usage: /ffa setlobby");
+				$player->sendMessage(TF::RED . "§l§g» §r§cPlease set lobby position, Usage: /ffa setlobby");
 			return false;
 		}
 		
 		if(!is_array($this->getRespawn()) || count($this->getRespawn()) == 0){
 			if($player->hasPermission("ffa.command.admin"))
-				$player->sendMessage(TF::RED . "Please set respawn position, Usage: /ffa setrespawn");
+				$player->sendMessage(TF::RED . "§l§g» §r§cPlease set respawn position, Usage: /ffa setrespawn");
 			return false;
 		}
 		
@@ -403,12 +403,13 @@ class FFAGame
 				$this->getPlugin()->getDeaths($player, function($deaths) use ($player, $kills): void{
 					$this->new($player, "ffa", $this->scoreboardsLines[$this->scoreboardsLine]);
 					$this->setLine($player, 1, " ");
-					$this->setLine($player, 2, " Players: " . TF::YELLOW . count($this->getPlayers()) . "  ");
+					$this->setLine($player, 2, "§5Blossom §l§d»§r Hub");
 					$this->setLine($player, 3, "  ");
-					$this->setLine($player, 4, " Map: " . TF::YELLOW . $this->getName() . "  ");
+					$this->setLine($player, 3, " §ePlayers: " . TF::RESET . count($this->getPlayers()) . "  ");
+					$this->setLine($player, 4, " §eMap: " . TF::RESET . $this->getName() . "  ");
 					$this->setLine($player, 5, "   ");
-					$this->setLine($player, 6, " Kills: " . TF::YELLOW . $kills . " ");
-					$this->setLine($player, 7, " Deaths: " . TF::YELLOW . $deaths . " ");
+					$this->setLine($player, 6, " §aKills: " . TF::RESET . $kills . " ");
+					$this->setLine($player, 7, " §cDeaths: " . TF::RESET . $deaths . " ");
 					$this->setLine($player, 8, "    ");
 					$this->setLine($player, 9, " " . str_replace("&", TF::ESCAPE, $this->plugin->getConfig()->get("scoreboardIp", "play.example.net") . " "));
 				});
