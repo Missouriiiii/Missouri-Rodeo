@@ -65,7 +65,7 @@ class FFAGame
 		0 => TF::BOLD . TF::BLUE . "FFA",
 		1 => TF::BOLD . TF::BLUE . "F" . TF::DARK_BLUE . "FA",
 		2 => TF::BOLD . TF::BLUE . "F" . TF::DARK_BLUE . "F" . TF::BLUE . "A",
-		3 => TF::BOLD . TF::BLUE . "FF" . TF::BARK_BLUE . "A",
+		3 => TF::BOLD . TF::BLUE . "FF" . TF::DARK_BLUE . "A",
 		4 => TF::BOLD . TF::DARK_BLUE . "FFA"
 	];
 	
